@@ -1,14 +1,21 @@
-const express = require('express');
-const path = require('path');
-const app = express();
-const PORT = process.env.PORT || 3000;
+from flask import Flask
+import threading
+import time
 
-app.use(express.static(path.join(__dirname, 'public')));
+app = Flask(__name__)
 
-app.get('/api/hello', (req, res) => {
-  res.json({ message: 'أهلاً من الخادم (Node.js)!' });
-});
+@app.route('/')
+def home():
+    return "Server is running 24/7"
 
-app.listen(PORT, () => {
-  console.log(`🚀 الخادم يعمل على http://localhost:${PORT}`);
-});
+def run():
+    app.run(host="0.0.0.0", port=3000)
+
+def keep_alive():
+    while True:
+        print("Running...")
+        time.sleep(60)
+
+threading.Thread(target=keep_alive).start()
+
+run()
